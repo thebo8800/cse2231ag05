@@ -64,7 +64,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 		assert i >= 0 : "Violation of: i >= 0";
 
 		if (i != 0) {
-			this.rep = Integer.toString(i); iijfewoji
+			this.rep = Integer.toString(i); 
 		} else {
 			// zero represents the empty string
 			this.rep = "";
