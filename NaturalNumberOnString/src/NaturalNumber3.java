@@ -146,26 +146,48 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 		assert 0 <= k : "Violation of: 0 <= k";
 		assert k < RADIX : "Violation of: k < 10";
 
-		// TODO - fill in body
-
+		//Add k onto the end of $this.rep
+		this.rep= this.rep +k; 
+		
+		//Maintain workoing order for 0
+		if( this.rep,equals("0"))
+		    this.rep = "";
 	}
 
 	@Override
 	public final int divideBy10() {
 
-		// TODO - fill in body
+		//Create the remainder variable that will be returned
+	    int remainder = 0; 
+	    
+	    //see if $this.rep is > 0
+	    //if it is, use substrings to get the remainder
+	    //update $this.rep using substrings - the remainder
+	    //return the remainder.
+	    
+	    if(this.rep.length()>0) {
+	        
+	        //remainder
+	        String lastDigit = this.rep.substring(this.rep.length() -1);
+	        
+	        //update 
+	        this.rep = this.rep.substring(0, this.rep.length-1);
+	        
+	        //convert remainder to int
+	        remainder = Integer.parseInt(lastDigit);
+	    }
 
-		// This line added just to make the component compilable.
-		return 0;
+		
+		return remainder;
 	}
 
 	@Override
 	public final boolean isZero() {
-
-		// TODO - fill in body
-
-		// This line added just to make the component compilable.
-		return false;
+	    
+	    // "" will correspond to 0 for this representation
+	    
+	    //This line will return a boolean 
+		return (this.rep.length() == 0);
 	}
 
 }
