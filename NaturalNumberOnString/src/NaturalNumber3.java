@@ -64,7 +64,7 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 		assert i >= 0 : "Violation of: i >= 0";
 
 		if (i != 0) {
-			this.rep = Integer.toString(i); 
+			this.rep = Integer.toString(i);
 		} else {
 			// zero represents the empty string
 			this.rep = "";
@@ -157,36 +157,35 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 	@Override
 	public final int divideBy10() {
 
-		//Create the remainder variable that will be returned
-	    int remainder = 0; 
-	    
-	    //see if $this.rep is > 0
-	    //if it is, use substrings to get the remainder
-	    //update $this.rep using substrings - the remainder
-	    //return the remainder.
-	    
-	    if(this.rep.length()>0) {
-	        
-	        //remainder
-	        String lastDigit = this.rep.substring(this.rep.length() -1);
-	        
-	        //update 
-	        this.rep = this.rep.substring(0, this.rep.length-1);
-	        
-	        //convert remainder to int
-	        remainder = Integer.parseInt(lastDigit);
-	    }
+		// Create the remainder variable that will be returned
+		int remainder = 0;
 
-		
+		// see if $this.rep is > 0
+		// if it is, use substrings to get the remainder
+		// update $this.rep using substrings - the remainder
+		// return the remainder.
+
+		if (this.rep.length() > 0) {
+
+			// remainder
+			String lastDigit = this.rep.substring(this.rep.length() - 1);
+
+			// update
+			this.rep = this.rep.substring(0, this.rep.length() - 1);
+
+			// convert remainder to int
+			remainder = Integer.parseInt(lastDigit);
+		}
+
 		return remainder;
 	}
 
 	@Override
 	public final boolean isZero() {
-	    
-	    // "" will correspond to 0 for this representation
-	    
-	    //This line will return a boolean 
+
+		// "" will correspond to 0 for this representation
+
+		// This line will return a boolean
 		return (this.rep.length() == 0);
 	}
 
