@@ -98,5 +98,26 @@ public abstract class NaturalNumberTest {
     protected abstract NaturalNumber constructorRef(NaturalNumber n);
 
     // TODO - add test cases for four constructors, multiplyBy10, divideBy10, isZero
+    
+    @Test 
+    public final void testDefault() {
+        NaturalNumber m = this.constructorTest();
+        NaturalNumber n = this.constructorRef();
 
+        assertEquals(m, n);
+    
+    @Test 
+    public final void testConstructor0() {
+        NaturalNumber n = this.constructorTest(0);
+        NaturalNumber m = this.constructorRef(0);
+        assertEquals(n, m);
+    }
+    
+    @Test 
+    public final void testContructor02() {
+        NaturalNumber n = this.constructorTest("0");
+        NaturalNumber m = this.constructorTest("0");
+        
+        assertEquals(n, m);
+    }
 }
