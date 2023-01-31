@@ -1,80 +1,55 @@
 import components.naturalnumber.NaturalNumber;
+import components.naturalnumber.NaturalNumber1L;
 
 /**
  * Customized JUnit test fixture for {@code NaturalNumber3}.
  */
 public class NaturalNumber3Test extends NaturalNumberTest {
 
-    @Override
-    protected final NaturalNumber constructorTest() {
+	@Override
+	protected final NaturalNumber constructorTest() {
+		return new NaturalNumber3();
+	}
 
-        // TODO - fill in body
+	@Override
+	protected final NaturalNumber constructorTest(int i) {
+		return new NaturalNumber3(i);
+	}
 
-        // This line added just to make the component compilable.
-        return null;
-    }
+	@Override
+	protected final NaturalNumber constructorTest(String s) {
 
-    @Override
-    protected final NaturalNumber constructorTest(int i) {
+		return new NaturalNumber3(s);
+	}
 
-        // TODO - fill in body
+	@Override
+	protected final NaturalNumber constructorTest(NaturalNumber n) {
 
-        // This line added just to make the component compilable.
-        return null;
-    }
+		return new NaturalNumber3(n);
+	}
 
-    @Override
-    protected final NaturalNumber constructorTest(String s) {
+	@Override
+	protected final NaturalNumber constructorRef() {
 
-        // TODO - fill in body
+		return new NaturalNumber1L();
+	}
 
-        // This line added just to make the component compilable.
-        return null;
-    }
+	@Override
+	protected final NaturalNumber constructorRef(int i) {
 
-    @Override
-    protected final NaturalNumber constructorTest(NaturalNumber n) {
+		return new NaturalNumber1L(i);
+	}
 
-        // TODO - fill in body
+	@Override
+	protected final NaturalNumber constructorRef(String s) {
 
-        // This line added just to make the component compilable.
-        return null;
-    }
+		return new NaturalNumber1L(s);
+	}
 
-    @Override
-    protected final NaturalNumber constructorRef() {
+	@Override
+	protected final NaturalNumber constructorRef(NaturalNumber n) {
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
-    }
-
-    @Override
-    protected final NaturalNumber constructorRef(int i) {
-
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
-    }
-
-    @Override
-    protected final NaturalNumber constructorRef(String s) {
-
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
-    }
-
-    @Override
-    protected final NaturalNumber constructorRef(NaturalNumber n) {
-
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
-    }
+		return new NaturalNumber1L(n);
+	}
 
 }

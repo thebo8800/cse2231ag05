@@ -81,7 +81,9 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 		assert s != null : "Violation of: s is not null";
 		assert s.matches("0|[1-9]\\d*") : "" + "Violation of: there exists n: NATURAL (s = TO_STRING(n))";
 
-		if (s != "0") {
+		this.createNewRep();
+
+		if (!s.equals("0")) {
 			this.rep = s;
 		} else {
 			// zero represents the empty string
@@ -146,12 +148,12 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 		assert 0 <= k : "Violation of: 0 <= k";
 		assert k < RADIX : "Violation of: k < 10";
 
-		//Add k onto the end of $this.rep
-		this.rep= this.rep +k; 
-		
-		//Maintain workoing order for 0
-		if( this.rep,equals("0"))
-		    this.rep = "";
+		// Add k onto the end of $this.rep
+		this.rep = this.rep + k;
+
+		// Maintain working order for 0
+		if (this.rep.equals("0"))
+			this.rep = "";
 	}
 
 	@Override
