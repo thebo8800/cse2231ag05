@@ -162,5 +162,153 @@ public abstract class NaturalNumberTest {
 		assertEquals(n, m);
 		assertEquals(n, l);
 	}
+	
+	/*
+     * Tests int constructor, boundary case: largest possible int
+     */
+    @Test
+    public final void testIntConstructorIntMaxValue() {
+       
+        NaturalNumber test = this.constructorTest(Integer.MAX_VALUE);
+        NaturalNumber ref = this.constructorRef(Integer.MAX_VALUE);
+       
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testIntConstructorSingleDigitEven() {
+        
+        NaturalNumber test = this.constructorTest(4);
+        NaturalNumber ref = this.constructorRef(4);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testIntConstructorSingleDigitOdd() {
+       
+        NaturalNumber test = this.constructorTest(7);
+        NaturalNumber ref = this.constructorRef(7);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testMultiplyBy10ThisZero() {
+        
+        NaturalNumber test = this.constructorTest(0);
+        NaturalNumber ref = this.constructorRef(0);
+        
+        // Call method
+        test.multiplyBy10(5);
+        ref.multiplyBy10(5);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testMultiplyBy10_9() {
+        
+        NaturalNumber test = this.constructorTest(2);
+        NaturalNumber ref = this.constructorRef(2);
+       
+        // Test Boundary Case with 9
+        test.multiplyBy10(9);
+        ref.multiplyBy10(9);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testMultiplyBy10_0() {
+        
+        NaturalNumber test = this.constructorTest(2);
+        NaturalNumber ref = this.constructorRef(2);
+        
+        // Test boundary case with 0
+        test.multiplyBy10(0);
+        ref.multiplyBy10(0);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testMultiplyBy10MultipleDigit() {
+        
+        NaturalNumber test = this.constructorTest(589076);
+        NaturalNumber ref = this.constructorRef(589076);
+        
+        test.multiplyBy10(4);
+        ref.multiplyBy10(4);
+        
+        assertEquals(ref, test);
+    }
+    
+    @Test
+    public final void testDivideBy10_0() {
+        
+        NaturalNumber test = this.constructorTest(0);
+        NaturalNumber ref = this.constructorRef(0);
+        
+        int remainderTest = test.divideBy10();
+        int remainderRef = ref.divideBy10();
+        
+        assertEquals(ref, test);
+        assertEquals(remainderTest, remainderRef);
+    }
+    
+    @Test
+    public final void testDivideBy10SingleDigit() {
+        
+        NaturalNumber test = this.constructorTest(7);
+        NaturalNumber ref = this.constructorRef(7);
+        
+        int remainderTest = test.divideBy10();
+        int remainderRef = ref.divideBy10();
+        
+        assertEquals(ref, test);
+        assertEquals(remainderTest, remainderRef);
+    }
+    
+    @Test
+    public final void testIsZeroIntMaxValue() {
+        
+        NaturalNumber test = this.constructorTest(Integer.MAX_VALUE + "" + 5);
+        NaturalNumber ref = this.constructorRef(Integer.MAX_VALUE + "" + 5);
+        assertEquals(ref, test);
+        
+        boolean testIsZero = test.isZero();
+        
+        assertEquals(test, ref);
+        assertEquals(testIsZero, false);
+    }
+
+    
+    @Test
+    public final void testIsZeroLongMaxValue() {
+        
+        NaturalNumber test = this.constructorTest(Long.MAX_VALUE + "" + 5);
+        NaturalNumber ref = this.constructorRef(Long.MAX_VALUE + "" + 5);
+        assertEquals(ref, test);
+        
+        boolean testIsZero = test.isZero();
+        
+        assertEquals(test, ref);
+        assertEquals(testIsZero, false);
+    }
+
+    
+    @Test
+    public final void testIsZeroSingleDigit() {
+        
+        NaturalNumber test = this.constructorTest(3);
+        NaturalNumber ref = this.constructorRef(3);
+        assertEquals(ref, test);
+        
+        boolean testIsZero = test.isZero();
+        
+        assertEquals(test, ref);
+        assertEquals(testIsZero, false);
+    }
 
 }
