@@ -1,7 +1,10 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import components.array.Array;
+import components.array.Array1L;
 import components.map.Map;
+import components.map.Map2;
 import components.map.MapSecondary;
 
 /**
@@ -110,8 +113,10 @@ public class Map4<K, V> extends MapSecondary<K, V> {
          * conversion, though it cannot fail.
          */
         this.hashTable = new Map[hashTableSize];
-
-        // TODO - fill in rest of body
+        for(int i = 0; i < hashTableSize; i++) {
+        	this.hashTable.setEntry(i, new Map2<k,V>);
+        }
+        this.size = 0;
 
     }
 
@@ -124,7 +129,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      */
     public Map4() {
 
-        // TODO - fill in body
+        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
 
     }
 
@@ -138,8 +143,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
      */
     public Map4(int hashTableSize) {
 
-        // TODO - fill in body
-
+    	this.createNewRep(hashTableSize);
     }
 
     /*
@@ -189,7 +193,15 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert value != null : "Violation of: value is not null";
         assert !this.hasKey(key) : "Violation of: key is not in DOMAIN(this)";
 
-        // TODO - fill in body
+        //First find the correct bucket number for the key
+        int kHash = key.hasCode(); 
+        int bucket = mod(kHash, this.hashTable.length());
+        
+        //After finding correct bucket | Add Key and Value to bucket
+        this.hashTable.entry(bucket).add(key, value); 
+        
+        //Now update size of object: this in order to keep mod method working
+        this.size()++
 
     }
 
@@ -198,20 +210,33 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert key != null : "Violation of: key is not null";
         assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return null;
+        //First find the correct bucket number for the key
+        int kHash = key.hasCode(); 
+        int bucket = mod(kHash, this.hashTable.length());
+        
+        //Remove the pair from the correct bucket
+        Map.Pair<K,V> removedPair = this.hashTable.entry(bucket).remove(key);
+        
+      //Now update size of object: this in order to keep mod method working
+        
+        return removedPair;
     }
 
     @Override
     public final Pair<K, V> removeAny() {
         assert this.size() > 0 : "Violation of: this /= empty_set";
 
-        // TODO - fill in body
+        //Find bucket with: size() > 0
+        int bucketRemove = 0;
+        while(this.hashTable.entry(bucketRemove).size() == 0) {
+        	bucketRemove++;
+        }
 
-        // This line added just to make the component compilable.
-        return null;
+        //Create map pair that is going to be removed from the chosen bucket
+        Map.Pair<K,V> removedPair = this.hashTable.entry(bucketRemove).removeAny();
+        
+        //Remove the randomly chosen pair
+        return removedPair;
     }
 
     @Override
