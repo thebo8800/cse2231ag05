@@ -226,10 +226,13 @@ public class Map4<K, V> extends MapSecondary<K, V> {
             bucketRemove++;
         }
 
-        //Create map pair that is going to be removed from the chosen bucket
+        //Create and remove map pair from the chosen bucket
         Map.Pair<K, V> removedPair = this.hashTable[bucketRemove].removeAny();
 
-        //Remove the randomly chosen pair
+        //Update the size of this
+        this.size--;
+        
+        //Return the randomly chosen pair
         return removedPair;
     }
 
@@ -238,29 +241,29 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert key != null : "Violation of: key is not null";
         assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-        // TODO - fill in body
+        //First find the correct bucket number for the key
+        int kHash = key.hashCode();
+        int bucket = mod(kHash, this.hashTable.length);
 
-        // This line added just to make the component compilable.
-        return null;
+        
+        return this.hashTable[bucklet].value(key);
     }
 
     @Override
     public final boolean hasKey(K key) {
         assert key != null : "Violation of: key is not null";
 
-        // TODO - fill in body
+        //First find the correct bucket number for the key
+        int kHash = key.hashCode();
+        int bucket = mod(kHash, this.hashTable.length);
 
-        // This line added just to make the component compilable.
-        return false;
+        return this.hashTable[bucklet].hasKey(key);
     }
 
     @Override
     public final int size() {
 
-        // TODO - fill in body
-
-        // This line added just to make the component compilable.
-        return 0;
+        return this.size;
     }
 
     @Override
