@@ -2,17 +2,18 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import components.map.Map;
+import components.map.Map1L;
 import components.map.MapSecondary;
 
 /**
  * {@code Map} represented as a hash table using {@code Map}s for the buckets,
  * with implementations of primary methods.
  *
- * @param <K>
- *            type of {@code Map} domain (key) entries
- * @param <V>
- *            type of {@code Map} range (associated value) entries
- * @convention <pre>
+ * @param <K> type of {@code Map} domain (key) entries
+ * @param <V> type of {@code Map} range (associated value) entries
+ * @convention
+ * 
+ *             <pre>
  * |$this.hashTable| > 0  and
  * for all i: integer, pf: PARTIAL_FUNCTION, x: K
  *     where (0 <= i  and  i < |$this.hashTable|  and
@@ -26,311 +27,315 @@ import components.map.MapSecondary;
  *     where (0 <= i  and  i < |$this.hashTable|  and
  *            <pf> = $this.hashTable[i, i+1))
  *   (|pf|)
- * </pre>
- * @correspondence <pre>
+ *             </pre>
+ * 
+ * @correspondence
+ * 
+ *                 <pre>
  * this = union i: integer, pf: PARTIAL_FUNCTION
  *            where (0 <= i  and  i < |$this.hashTable|  and
  *                   <pf> = $this.hashTable[i, i+1))
  *          (pf)
- * </pre>
+ *                 </pre>
  *
- * @author Put your name here
+ * @author Junbo Chen, Brett Emory
  *
  */
 public class Map4<K, V> extends MapSecondary<K, V> {
 
-    /*
-     * Private members --------------------------------------------------------
-     */
+	/*
+	 * Private members --------------------------------------------------------
+	 */
 
-    /**
-     * Default size of hash table.
-     */
-    private static final int DEFAULT_HASH_TABLE_SIZE = 101;
+	/**
+	 * Default size of hash table.
+	 */
+	private static final int DEFAULT_HASH_TABLE_SIZE = 101;
 
-    /**
-     * Buckets for hashing.
-     */
-    private Map<K, V>[] hashTable;
+	/**
+	 * Buckets for hashing.
+	 */
+	private Map<K, V>[] hashTable;
 
-    /**
-     * Total size of abstract {@code this}.
-     */
-    private int size;
+	/**
+	 * Total size of abstract {@code this}.
+	 */
+	private int size;
 
-    /**
-     * Computes {@code a} mod {@code b} as % should have been defined to work.
-     *
-     * @param a
-     *            the number being reduced
-     * @param b
-     *            the modulus
-     * @return the result of a mod b, which satisfies 0 <= {@code mod} < b
-     * @requires b > 0
-     * @ensures <pre>
-     * 0 <= mod  and  mod < b  and
-     * there exists k: integer (a = k * b + mod)
-     * </pre>
-     */
-    private static int mod(int a, int b) {
-        assert b > 0 : "Violation of: b > 0";
+	/**
+	 * Computes {@code a} mod {@code b} as % should have been defined to work.
+	 *
+	 * @param a the number being reduced
+	 * @param b the modulus
+	 * @return the result of a mod b, which satisfies 0 <= {@code mod} < b
+	 * @requires b > 0
+	 * @ensures
+	 * 
+	 *          <pre>
+	 * 0 <= mod  and  mod < b  and
+	 * there exists k: integer (a = k * b + mod)
+	 *          </pre>
+	 */
+	private static int mod(int a, int b) {
+		assert b > 0 : "Violation of: b > 0";
 
-        int modulus = 0;
-        int remainder = a % b;
+		int modulus = 0;
+		int remainder = a % b;
 
-        //Negative numbers | counterclockwise implementation
-        if (remainder < 0) {
-            modulus = b + remainder;
-        } else {
-            //Clockwise direction for positive numbers
-            modulus = remainder;
-        }
-        return modulus;
-    }
+		// Negative numbers | counterclockwise implementation
+		if (remainder < 0) {
+			modulus = b + remainder;
+		} else {
+			// Clockwise direction for positive numbers
+			modulus = remainder;
+		}
+		return modulus;
 
-    /**
-     * Creator of initial representation.
-     *
-     * @param hashTableSize
-     *            the size of the hash table
-     * @requires hashTableSize > 0
-     * @ensures <pre>
-     * |$this.hashTable| = hashTableSize  and
-     * for all i: integer
-     *     where (0 <= i  and  i < |$this.hashTable|)
-     *   ($this.hashTable[i, i+1) = <{}>)  and
-     * $this.size = 0
-     * </pre>
-     */
-    @SuppressWarnings("unchecked")
-    private void createNewRep(int hashTableSize) {
-        /*
-         * With "new Map<K, V>[...]" in place of "new Map[...]" it does not
-         * compile; as shown, it results in a warning about an unchecked
-         * conversion, though it cannot fail.
-         */
-        this.hashTable = new Map[hashTableSize];
-        this.size = 0;
+	}
 
-    }
+	/**
+	 * Creator of initial representation.
+	 *
+	 * @param hashTableSize the size of the hash table
+	 * @requires hashTableSize > 0
+	 * @ensures
+	 * 
+	 *          <pre>
+	 * |$this.hashTable| = hashTableSize  and
+	 * for all i: integer
+	 *     where (0 <= i  and  i < |$this.hashTable|)
+	 *   ($this.hashTable[i, i+1) = <{}>)  and
+	 * $this.size = 0
+	 *          </pre>
+	 */
+	@SuppressWarnings("unchecked")
+	private void createNewRep(int hashTableSize) {
+		/*
+		 * With "new Map<K, V>[...]" in place of "new Map[...]" it does not compile; as
+		 * shown, it results in a warning about an unchecked conversion, though it
+		 * cannot fail.
+		 */
+		this.size = 0;
+		this.hashTable = new Map[hashTableSize];
+		for (int i = 0; i < hashTableSize; i++) {
+			this.hashTable[i] = new Map1L<>();
+		}
 
-    /*
-     * Constructors -----------------------------------------------------------
-     */
+	}
 
-    /**
-     * No-argument constructor.
-     */
-    public Map4() {
+	/*
+	 * Constructors -----------------------------------------------------------
+	 */
 
-        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
+	/**
+	 * No-argument constructor.
+	 */
+	public Map4() {
 
-    }
+		this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
 
-    /**
-     * Constructor resulting in a hash table of size {@code hashTableSize}.
-     *
-     * @param hashTableSize
-     *            size of hash table
-     * @requires hashTableSize > 0
-     * @ensures this = {}
-     */
-    public Map4(int hashTableSize) {
+	}
 
-        this.createNewRep(hashTableSize);
-    }
+	/**
+	 * Constructor resulting in a hash table of size {@code hashTableSize}.
+	 *
+	 * @param hashTableSize size of hash table
+	 * @requires hashTableSize > 0
+	 * @ensures this = {}
+	 */
+	public Map4(int hashTableSize) {
 
-    /*
-     * Standard methods -------------------------------------------------------
-     */
+		this.createNewRep(hashTableSize);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public final Map<K, V> newInstance() {
-        try {
-            return this.getClass().getConstructor().newInstance();
-        } catch (ReflectiveOperationException e) {
-            throw new AssertionError(
-                    "Cannot construct object of type " + this.getClass());
-        }
-    }
+	/*
+	 * Standard methods -------------------------------------------------------
+	 */
 
-    @Override
-    public final void clear() {
-        this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public final Map<K, V> newInstance() {
+		try {
+			return this.getClass().getConstructor().newInstance();
+		} catch (ReflectiveOperationException e) {
+			throw new AssertionError("Cannot construct object of type " + this.getClass());
+		}
+	}
 
-    @Override
-    public final void transferFrom(Map<K, V> source) {
-        assert source != null : "Violation of: source is not null";
-        assert source != this : "Violation of: source is not this";
-        assert source instanceof Map4<?, ?> : ""
-                + "Violation of: source is of dynamic type Map4<?,?>";
-        /*
-         * This cast cannot fail since the assert above would have stopped
-         * execution in that case: source must be of dynamic type Map4<?,?>, and
-         * the ?,? must be K,V or the call would not have compiled.
-         */
-        Map4<K, V> localSource = (Map4<K, V>) source;
-        this.hashTable = localSource.hashTable;
-        this.size = localSource.size;
-        localSource.createNewRep(DEFAULT_HASH_TABLE_SIZE);
-    }
+	@Override
+	public final void clear() {
+		this.createNewRep(DEFAULT_HASH_TABLE_SIZE);
+	}
 
-    /*
-     * Kernel methods ---------------------------------------------------------
-     */
+	@Override
+	public final void transferFrom(Map<K, V> source) {
+		assert source != null : "Violation of: source is not null";
+		assert source != this : "Violation of: source is not this";
+		assert source instanceof Map4<?, ?> : "" + "Violation of: source is of dynamic type Map4<?,?>";
+		/*
+		 * This cast cannot fail since the assert above would have stopped execution in
+		 * that case: source must be of dynamic type Map4<?,?>, and the ?,? must be K,V
+		 * or the call would not have compiled.
+		 */
+		Map4<K, V> localSource = (Map4<K, V>) source;
+		this.hashTable = localSource.hashTable;
+		this.size = localSource.size;
+		localSource.createNewRep(DEFAULT_HASH_TABLE_SIZE);
+	}
 
-    @Override
-    public final void add(K key, V value) {
-        assert key != null : "Violation of: key is not null";
-        assert value != null : "Violation of: value is not null";
-        assert !this.hasKey(key) : "Violation of: key is not in DOMAIN(this)";
+	/*
+	 * Kernel methods ---------------------------------------------------------
+	 */
 
-        //First find the correct bucket number for the key
-        int kHash = key.hashCode();
-        int bucket = mod(kHash, this.hashTable.length);
+	@Override
+	public final void add(K key, V value) {
+		assert key != null : "Violation of: key is not null";
+		assert value != null : "Violation of: value is not null";
+		assert !this.hasKey(key) : "Violation of: key is not in DOMAIN(this)";
 
-        //After finding correct bucket | Add Key and Value to bucket
-        this.hashTable[bucket].add(key, value);
+		// First find the correct bucket number for the key
+		int kHash = key.hashCode();
+		int bucket = mod(kHash, this.hashTable.length);
 
-        //Now update size of object: this in order to keep mod method working
-        this.size++;
+		// After finding correct bucket | Add Key and Value to bucket
+		this.hashTable[bucket].add(key, value);
 
-    }
+		// Now update size of object: this in order to keep mod method working
+		this.size++;
 
-    @Override
-    public final Pair<K, V> remove(K key) {
-        assert key != null : "Violation of: key is not null";
-        assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
+	}
 
-        //First find the correct bucket number for the key
-        int kHash = key.hashCode();
-        int bucket = mod(kHash, this.hashTable.length);
+	@Override
+	public final Pair<K, V> remove(K key) {
+		assert key != null : "Violation of: key is not null";
+		assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-        //Remove the pair from the correct bucket
-        Map.Pair<K, V> removedPair = this.hashTable[bucket].remove(key);
+		// First find the correct bucket number for the key
+		int kHash = key.hashCode();
+		int bucket = mod(kHash, this.hashTable.length);
 
-        //Now update size of object: this in order to keep mod method working
+		// Remove the pair from the correct bucket
+		Map.Pair<K, V> removedPair = this.hashTable[bucket].remove(key);
 
-        return removedPair;
-    }
+		// decrease size of map upon removal
+		// Now update size of object: this in order to keep mod method working
+		this.size--;
 
-    @Override
-    public final Pair<K, V> removeAny() {
-        assert this.size() > 0 : "Violation of: this /= empty_set";
+		return removedPair;
+	}
 
-        //Find bucket with: size() > 0
-        int bucketRemove = 0;
-        while (this.hashTable[bucketRemove].size() == 0) {
-            bucketRemove++;
-        }
+	@Override
+	public final Pair<K, V> removeAny() {
+		assert this.size() > 0 : "Violation of: this /= empty_set";
 
-        //Create and remove map pair from the chosen bucket
-        Map.Pair<K, V> removedPair = this.hashTable[bucketRemove].removeAny();
+		// Find bucket with: size() > 0
+		int bucketRemove = 0;
+		while (this.hashTable[bucketRemove].size() == 0) {
+			bucketRemove++;
+		}
 
-        //Update the size of this
-        this.size--;
-        
-        //Return the randomly chosen pair
-        return removedPair;
-    }
+		// Create and remove map pair from the chosen bucket
+		Map.Pair<K, V> removedPair = this.hashTable[bucketRemove].removeAny();
 
-    @Override
-    public final V value(K key) {
-        assert key != null : "Violation of: key is not null";
-        assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
+		// Update the size of this
+		this.size--;
 
-        //First find the correct bucket number for the key
-        int kHash = key.hashCode();
-        int bucket = mod(kHash, this.hashTable.length);
+		// Return the randomly chosen pair
+		return removedPair;
+	}
 
-        
-        return this.hashTable[bucklet].value(key);
-    }
+	@Override
+	public final V value(K key) {
+		assert key != null : "Violation of: key is not null";
+		assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
-    @Override
-    public final boolean hasKey(K key) {
-        assert key != null : "Violation of: key is not null";
+		// First find the correct bucket number for the key
+		int kHash = key.hashCode();
+		int bucket = mod(kHash, this.hashTable.length);
 
-        //First find the correct bucket number for the key
-        int kHash = key.hashCode();
-        int bucket = mod(kHash, this.hashTable.length);
+		return this.hashTable[bucket].value(key);
+	}
 
-        return this.hashTable[bucklet].hasKey(key);
-    }
+	@Override
+	public final boolean hasKey(K key) {
+		assert key != null : "Violation of: key is not null";
 
-    @Override
-    public final int size() {
+		// First find the correct bucket number for the key
+		int kHash = key.hashCode();
+		int bucket = mod(kHash, this.hashTable.length);
 
-        return this.size;
-    }
+		return this.hashTable[bucket].hasKey(key);
 
-    @Override
-    public final Iterator<Pair<K, V>> iterator() {
-        return new Map4Iterator();
-    }
+	}
 
-    /**
-     * Implementation of {@code Iterator} interface for {@code Map4}.
-     */
-    private final class Map4Iterator implements Iterator<Pair<K, V>> {
+	@Override
+	public final int size() {
 
-        /**
-         * Number of elements seen already (i.e., |~this.seen|).
-         */
-        private int numberSeen;
+		return this.size;
+	}
 
-        /**
-         * Bucket from which current bucket iterator comes.
-         */
-        private int currentBucket;
+	@Override
+	public final Iterator<Pair<K, V>> iterator() {
+		return new Map4Iterator();
+	}
 
-        /**
-         * Bucket iterator from which next element will come.
-         */
-        private Iterator<Pair<K, V>> bucketIterator;
+	/**
+	 * Implementation of {@code Iterator} interface for {@code Map4}.
+	 */
+	private final class Map4Iterator implements Iterator<Pair<K, V>> {
 
-        /**
-         * No-argument constructor.
-         */
-        Map4Iterator() {
-            this.numberSeen = 0;
-            this.currentBucket = 0;
-            this.bucketIterator = Map4.this.hashTable[0].iterator();
-        }
+		/**
+		 * Number of elements seen already (i.e., |~this.seen|).
+		 */
+		private int numberSeen;
 
-        @Override
-        public boolean hasNext() {
-            return this.numberSeen < Map4.this.size;
-        }
+		/**
+		 * Bucket from which current bucket iterator comes.
+		 */
+		private int currentBucket;
 
-        @Override
-        public Pair<K, V> next() {
-            assert this.hasNext() : "Violation of: ~this.unseen /= <>";
-            if (!this.hasNext()) {
-                /*
-                 * Exception is supposed to be thrown in this case, but with
-                 * assertion-checking enabled it cannot happen because of assert
-                 * above.
-                 */
-                throw new NoSuchElementException();
-            }
-            this.numberSeen++;
-            while (!this.bucketIterator.hasNext()) {
-                this.currentBucket++;
-                this.bucketIterator = Map4.this.hashTable[this.currentBucket]
-                        .iterator();
-            }
-            return this.bucketIterator.next();
-        }
+		/**
+		 * Bucket iterator from which next element will come.
+		 */
+		private Iterator<Pair<K, V>> bucketIterator;
 
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException(
-                    "remove operation not supported");
-        }
+		/**
+		 * No-argument constructor.
+		 */
+		Map4Iterator() {
+			this.numberSeen = 0;
+			this.currentBucket = 0;
+			this.bucketIterator = Map4.this.hashTable[0].iterator();
+		}
 
-    }
+		@Override
+		public boolean hasNext() {
+			return this.numberSeen < Map4.this.size;
+		}
+
+		@Override
+		public Pair<K, V> next() {
+			assert this.hasNext() : "Violation of: ~this.unseen /= <>";
+			if (!this.hasNext()) {
+				/*
+				 * Exception is supposed to be thrown in this case, but with assertion-checking
+				 * enabled it cannot happen because of assert above.
+				 */
+				throw new NoSuchElementException();
+			}
+			this.numberSeen++;
+			while (!this.bucketIterator.hasNext()) {
+				this.currentBucket++;
+				this.bucketIterator = Map4.this.hashTable[this.currentBucket].iterator();
+			}
+			return this.bucketIterator.next();
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException("remove operation not supported");
+		}
+
+	}
 
 }
