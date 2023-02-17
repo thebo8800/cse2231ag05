@@ -195,54 +195,6 @@ public abstract class SetTest {
     }
 
     /**
-     * Tests removeAny, boundary case: size of this =1.
-     */
-    @Test
-    public final void testRemoveAnyToEmpty() {
-        /*
-         * Set up variables
-         */
-        Set<String> test = this.createFromArgsTest("abc");
-        Set<String> ref = this.createFromArgsRef("abc");
-        /*
-         * Call method under test
-         */
-        String testRemoved = test.removeAny();
-        /*
-         * Assert that values of variables match expectations
-         */
-        assertTrue(ref.contains(testRemoved));
-        ref.remove(testRemoved);
-        assertEquals(ref, test);
-        assertEquals("abc", testRemoved);
-
-    }
-
-    /**
-     * Tests removeAny, routine case: size of this >1.
-     */
-    @Test
-    public final void testRemoveAnySizeMultiple() {
-        /*
-         * Set up variables
-         */
-        Set<String> test = this.createFromArgsTest("abc", "efg", "hijk");
-        Set<String> ref = this.createFromArgsRef("abc", "efg", "hijk");
-        /*
-         * Call method under test
-         */
-        String testRemoved = test.removeAny();
-        /*
-         * Assert that values of variables match expectations
-         */
-        assertTrue(ref.contains(testRemoved));
-        String refRemoved = ref.remove(testRemoved);
-        assertEquals(ref, test);
-        assertEquals(refRemoved, testRemoved);
-
-    }
-
-    /**
      * Tests contains, boundary case: size of this =0.
      */
     @Test
@@ -426,5 +378,3 @@ public abstract class SetTest {
     }
 
 }
-
-

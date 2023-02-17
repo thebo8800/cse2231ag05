@@ -135,45 +135,58 @@ public class Set3a<T extends Comparable<T>> extends SetSecondary<T> {
 		return smallest;
 	}
 
-	/**
-	 * Finds label {@code x} in {@code t}, removes it from {@code t}, and returns
-	 * it.
-	 *
-	 * @param <T> type of {@code BinaryTree} labels
-	 * @param t   the {@code BinaryTree} from which to remove label {@code x}
-	 * @param x   the label to be removed
-	 * @return the removed label
-	 * @updates t
-	 * @requires IS_BST(t) and x is in labels(t)
-	 * @ensures
-	 * 
-	 *          <pre>
-	 * IS_BST(t)  and  removeFromTree = x  and
-	 *  labels(t) = labels(#t) \ {x}
-	 *          </pre>
-	 */
-	private static <T extends Comparable<T>> T removeFromTree(BinaryTree<T> t, T x) {
-		assert t != null : "Violation of: t is not null";
-		assert x != null : "Violation of: x is not null";
-		assert t.size() > 0 : "Violation of: x is in labels(t)";
+	 /**
+     * Finds label {@code x} in {@code t}, removes it from {@code t}, and
+     * returns it.
+     *
+     * @param <T>
+     *            type of {@code BinaryTree} labels
+     * @param t
+     *            the {@code BinaryTree} from which to remove label {@code x}
+     * @param x
+     *            the label to be removed
+     * @return the removed label
+     * @updates t
+     * @requires IS_BST(t) and x is in labels(t)
+     * @ensures
+     *
+     *          <pre>
+     * IS_BST(t)  and  removeFromTree = x  and
+     *  labels(t) = labels(#t) \ {x}
+     *          </pre>
+     */
+    private static <T extends Comparable<T>> T removeFromTree(BinaryTree<T> t,
+            T x) {
+        assert t != null : "Violation of: t is not null";
+        assert x != null : "Violation of: x is not null";
+        assert t.size() > 0 : "Violation of: x is in labels(t)";
 
-		BinaryTree<T> left = t.newInstance();
-		BinaryTree<T> right = t.newInstance();
-		T root = t.disassemble(left, right);
-		T removeElement = null;
+        BinaryTree<T> left = t.newInstance();
+        BinaryTree<T> right = t.newInstance();
+        T root = t.disassemble(left, right);
+        T removed = root;
 
-		if (x.equals(root)) {
-			removeElement = root;
-		} else if (x.compareTo(root) > 0) {
-			removeFromTree(right, x);
-		} else {
-			removeFromTree(left, x);
-		}
-
-		t.inOrderAssemble(root, left, right);
-
-		return removeElement;
-	}
+        //If root isn't x, get x from either right or left subtree
+        if (!root.equals(x)) {
+            if (root.compareTo(x) < 0) {
+                removed = removeFromTree(right, x);
+            } else {
+                removed = removeFromTree(left, x);
+            }
+            t.assemble(root, left, right);
+        } else {
+            //If root=x, then removed stays as the root
+            if (right.size() > 0) {
+                //If there's a right subtree, make its smallest element the new root
+                root = removeSmallest(right);
+                t.assemble(root, left, right);
+            } else {
+                //Otherwise, the tree becomes the left subtree
+                t.transferFrom(left);
+            }
+        }
+        return removed;
+    }
 
 	/**
 	 * Creator of initial representation.
