@@ -138,22 +138,80 @@ public abstract class SortingMachineTest {
     }
 
     @Test
-    public final void addTest() {
-    	SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "The", "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy");
-    	SortingMachine<String> m2 = this.createFromArgsRef(ORDER, true, "The", "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy", "Dawg");
-    	
-    	m.add("Dawg");
-    	assertEquals(m2, m);
+    public final void addTestEvenLength() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "The",
+                "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy");
+        SortingMachine<String> m2 = this.createFromArgsRef(ORDER, true, "The",
+                "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy",
+                "Dawg");
+
+        m.add("Dawg");
+        assertEquals(m2, m);
     }
-    
+
+    @Test
+    public final void testAddToNonEmptyOddLength() {
+
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2", "test3");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2", "test3", "test4");
+
+        test.add("test4");
+
+        assertEquals(ref, test);
+    }
+
     @Test
     public final void removeFirstTest() {
-    	SortingMachine<String> m = this.createFromArgsTest(ORDER, false, "A", "B", "C", "D", "E", "F", "G", "H", "I");
-    	SortingMachine<String> m2 = this.createFromArgsRef(ORDER, false, "B", "C", "D", "E", "F", "G", "H", "I");
-    	
-    	m.removeFirst();
-    	
-    	assertEquals(m2, m);
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false, "A",
+                "B", "C", "D", "E", "F", "G", "H", "I");
+        SortingMachine<String> m2 = this.createFromArgsRef(ORDER, false, "B",
+                "C", "D", "E", "F", "G", "H", "I");
+
+        m.removeFirst();
+
+        assertEquals(m2, m);
+    }
+
+    @Test
+    public final void testChangeToExtractionModeEmpty() {
+
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true);
+
+        test.changeToExtractionMode();
+        ref.changeToExtractionMode();
+
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testChangeToExtractionModeEvenLength() {
+
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2");
+
+        test.changeToExtractionMode();
+        ref.changeToExtractionMode();
+
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testChangeToExtractionModeOddLength() {
+
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2", "test3");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2", "test3");
+
+        test.changeToExtractionMode();
+        ref.changeToExtractionMode();
+
+        assertEquals(ref, test);
     }
 
 }
