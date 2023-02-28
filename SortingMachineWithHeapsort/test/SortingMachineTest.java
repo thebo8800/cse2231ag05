@@ -137,7 +137,23 @@ public abstract class SortingMachineTest {
         assertEquals(mExpected, m);
     }
 
-    // TODO - add test cases for add, changeToExtractionMode, removeFirst,
-    // isInInsertionMode, order, and size
+    @Test
+    public final void addTest() {
+    	SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "The", "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy");
+    	SortingMachine<String> m2 = this.createFromArgsRef(ORDER, true, "The", "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy", "Dawg");
+    	
+    	m.add("Dawg");
+    	assertEquals(m2, m);
+    }
+    
+    @Test
+    public final void removeFirstTest() {
+    	SortingMachine<String> m = this.createFromArgsTest(ORDER, false, "A", "B", "C", "D", "E", "F", "G", "H", "I");
+    	SortingMachine<String> m2 = this.createFromArgsRef(ORDER, false, "B", "C", "D", "E", "F", "G", "H", "I");
+    	
+    	m.removeFirst();
+    	
+    	assertEquals(m2, m);
+    }
 
 }
