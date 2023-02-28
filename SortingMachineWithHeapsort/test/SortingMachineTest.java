@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Comparator;
 
@@ -10,7 +11,7 @@ import components.sortingmachine.SortingMachine;
  * JUnit test fixture for {@code SortingMachine<String>}'s constructor and
  * kernel methods.
  *
- * @author Put your name here
+ * @author Brett Emory, Junbo Chen
  *
  */
 public abstract class SortingMachineTest {
@@ -130,87 +131,313 @@ public abstract class SortingMachineTest {
 
     @Test
     public final void testAddEmpty() {
+        //Set Up Variables
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
                 "green");
+        //Call Method
         m.add("green");
         assertEquals(mExpected, m);
     }
 
     @Test
     public final void addTestEvenLength() {
+        //Set Up Variables
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "The",
                 "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy");
         SortingMachine<String> m2 = this.createFromArgsRef(ORDER, true, "The",
                 "Brown", "Quick", "Fox", "Jumped", "Over", "The", "Lazy",
                 "Dawg");
-
+        //Call Method
         m.add("Dawg");
+        //Assertions
         assertEquals(m2, m);
     }
 
     @Test
     public final void testAddToNonEmptyOddLength() {
-
+        //Set Up Variables
         SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
                 "test1", "test2", "test3");
         SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
                 "test1", "test2", "test3", "test4");
-
+        //Call Method
         test.add("test4");
-
+        //Assertions
         assertEquals(ref, test);
     }
 
     @Test
     public final void removeFirstTest() {
+        //Set Up Variables
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false, "A",
                 "B", "C", "D", "E", "F", "G", "H", "I");
         SortingMachine<String> m2 = this.createFromArgsRef(ORDER, false, "B",
                 "C", "D", "E", "F", "G", "H", "I");
-
+        //Call Method
         m.removeFirst();
-
+        //Assertions
         assertEquals(m2, m);
     }
 
     @Test
     public final void testChangeToExtractionModeEmpty() {
-
+        //Set Up Variables
         SortingMachine<String> test = this.createFromArgsTest(ORDER, true);
         SortingMachine<String> ref = this.createFromArgsRef(ORDER, true);
-
+        //Call Method
         test.changeToExtractionMode();
         ref.changeToExtractionMode();
-
+        //Assertions
         assertEquals(ref, test);
     }
 
     @Test
     public final void testChangeToExtractionModeEvenLength() {
-
+        //Set Up Variables
         SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
                 "test1", "test2");
         SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
                 "test1", "test2");
-
+        //Call Method
         test.changeToExtractionMode();
         ref.changeToExtractionMode();
-
+        //Assertions
         assertEquals(ref, test);
     }
 
     @Test
     public final void testChangeToExtractionModeOddLength() {
-
+        //Set Up Variables
         SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
                 "test1", "test2", "test3");
         SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
                 "test1", "test2", "test3");
-
+        //Call Method
         test.changeToExtractionMode();
         ref.changeToExtractionMode();
+        //Assertions
+        assertEquals(ref, test);
+    }
 
+    @Test
+    public final void testRemoveFirstToEmpty() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1");
+
+        //Call Method
+        String removedTest = test.removeFirst();
+        String removedRef = ref.removeFirst();
+
+        //Assert statements
+        assertEquals(removedRef, removedTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testRemoveFirstOddNonEmpty() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1", "test2", "test3");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1", "test2", "test3");
+        //Call Method
+        String removedTest = test.removeFirst();
+        String removedRef = ref.removeFirst();
+        //Assertions
+        assertEquals(removedRef, removedTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testRemoveFirstEvenNonEmpty() {
+        ///Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1", "test2");
+        //Call Method
+        String removedTest = test.removeFirst();
+        String removedRef = ref.removeFirst();
+        //Assertions
+        assertEquals(removedRef, removedTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testIsInInsertionModeEmptyFalse() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false);
+        //Call Method
+        boolean insertionTest = test.isInInsertionMode();
+        boolean insertionRef = ref.isInInsertionMode();
+        //Assertions
+        assertEquals(insertionRef, insertionTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testIsInInsertionModeEmptyTrue() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true);
+        //Call Method
+        boolean insertionTest = test.isInInsertionMode();
+        boolean insertionRef = ref.isInInsertionMode();
+        //Assertions
+        assertEquals(insertionRef, insertionTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testIsInInsertionModeNonEmptyTrue() {
+
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2");
+        //Call Method
+        boolean insertionTest = test.isInInsertionMode();
+        boolean insertionRef = ref.isInInsertionMode();
+        //Assertions
+        assertEquals(insertionRef, insertionTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testIsInInsertionModeNonEmptyFalse() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1", "test2");
+        //Call Method
+        boolean insertionTest = test.isInInsertionMode();
+        boolean insertionRef = ref.isInInsertionMode();
+        //Assertions
+        assertEquals(insertionRef, insertionTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testOrderEmptyInsertion() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true);
+        //Call Method
+        Comparator<String> orderTest = test.order();
+        Comparator<String> orderRef = ref.order();
+        //Assertions
+        assertEquals(orderRef, orderTest);
+        assertTrue(orderRef == orderTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testOrderEmptyExtraction() {
+
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false);
+        //Call Method
+        Comparator<String> orderTest = test.order();
+        Comparator<String> orderRef = ref.order();
+        //Assertions
+        assertEquals(orderRef, orderTest);
+        assertTrue(orderRef == orderTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testOrderNonEmptyInsertion() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2");
+        //Call Method
+        Comparator<String> orderTest = test.order();
+        Comparator<String> orderRef = ref.order();
+        //Assertions
+        assertEquals(orderRef, orderTest);
+        assertTrue(orderRef == orderTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testOrderNonEmptyExtraction() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1", "test2");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1", "test2");
+        //Call Method
+        Comparator<String> orderTest = test.order();
+        Comparator<String> orderRef = ref.order();
+        //Assertions
+        assertEquals(orderRef, orderTest);
+        assertTrue(orderRef == orderTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testSizeEmptyInsertion() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true);
+        //Call Method
+        int sizeTest = test.size();
+        int sizeRef = ref.size();
+        //Assertions
+        assertEquals(sizeRef, sizeTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testSizeEmptyExtraction() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false);
+        //Call Method
+        int sizeTest = test.size();
+        int sizeRef = ref.size();
+        //Assertions
+        assertEquals(sizeRef, sizeTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testSizeNonEmptyInsertion() {
+
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, true,
+                "test1", "test2", "test3");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, true,
+                "test1", "test2", "test3");
+        //Call Method
+        int sizeTest = test.size();
+        int sizeRef = ref.size();
+        //Assertions
+        assertEquals(sizeRef, sizeTest);
+        assertEquals(ref, test);
+    }
+
+    @Test
+    public final void testSizeNonEmptyExtraction() {
+        //Set Up Variables
+        SortingMachine<String> test = this.createFromArgsTest(ORDER, false,
+                "test1", "test2", "test3");
+        SortingMachine<String> ref = this.createFromArgsRef(ORDER, false,
+                "test1", "test2", "test3");
+        //Call Method
+        int sizeTest = test.size();
+        int sizeRef = ref.size();
+        //Assertions
+        assertEquals(sizeRef, sizeTest);
         assertEquals(ref, test);
     }
 
