@@ -721,6 +721,66 @@ public abstract class ListTest {
 		assertEquals(list2, list1);
 	}
 
-	// add retreat tests
+	@Test
+	public void testRetreat1() {
+
+		List<String> l1 = this.createFromArgsTest(1, "Chimp", "Bonobo");
+		List<String> l2 = this.createFromArgsRef(0, "Chimp", "Bonobo");
+
+		l1.retreat();
+
+		assertEquals(l2, l1);
+	}
+
+	@Test
+	public void testRetreat2() {
+
+		List<String> l1 = this.createFromArgsTest(1, "Ape");
+		List<String> l2 = this.createFromArgsRef(0, "Ape");
+
+		l1.retreat();
+
+		assertEquals(l2, l1);
+
+	}
+
+	@Test
+	public void testRetreat3() {
+
+		List<String> l1 = this.createFromArgsTest(9, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+		List<String> l2 = this.createFromArgsRef(8, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+
+		l1.retreat();
+
+		assertEquals(l2, l1);
+	}
+
+	@Test
+	public void testRetreat4() {
+
+		List<String> l1 = this.createFromArgsTest(3, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+		List<String> l2 = this.createFromArgsRef(2, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+
+		l1.retreat();
+
+		assertEquals(l2, l1);
+	}
+
+	@Test
+	public void testRetreat5() {
+
+		List<String> l1 = this.createFromArgsTest(1, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+		List<String> l2 = this.createFromArgsRef(0, "The", "Quick", "Brown", "Fox", "Jumped", "Over", "The", "Lazy",
+				"Dog");
+
+		l1.retreat();
+
+		assertEquals(l2, l1);
+	}
 
 }
