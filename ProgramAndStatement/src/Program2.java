@@ -107,7 +107,10 @@ public class Program2 extends ProgramSecondary {
 	 */
 	private void createNewRep() {
 
-		// TODO - fill in body
+		this.context = new Map1L<String, Statement>();
+		this.body = new Statement1();
+		this.name = "Unnamed";
+
 		// Make sure to use Statement1 from the library
 		// Use Map1L for the context if you want the asserts below to match
 
@@ -167,26 +170,22 @@ public class Program2 extends ProgramSecondary {
 		assert n != null : "Violation of: n is not null";
 		assert Tokenizer.isIdentifier(n) : "" + "Violation of: n is a valid IDENTIFIER";
 
-		// TODO - fill in body
+		// set name to incoming program name
+		this.name = n;
 
 	}
 
 	@Override
 	public final String name() {
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public final Map<String, Statement> newContext() {
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		// create a new representation of the String-statement
+		return this.context.newInstance();
 	}
 
 	@Override
@@ -198,17 +197,20 @@ public class Program2 extends ProgramSecondary {
 				+ " of primitive instructions in the BL language";
 		assert allBlocks(c) : "Violation of: bodies in c" + " are all BLOCK statements";
 
-		// TODO - fill in body
+		// map to temporarily store value of c
+		Map<String, Statement> m1 = c.newInstance();
+		m1.transferFrom(c);
+		c.transferFrom(this.context);
+		// swap after creating representation of each
+		this.context.transferFrom(m1);
 
 	}
 
 	@Override
 	public final Statement newBody() {
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		// return a new representation of the body (statements)
+		return this.body.newInstance();
 	}
 
 	@Override
@@ -217,7 +219,12 @@ public class Program2 extends ProgramSecondary {
 		assert b instanceof Statement1 : "Violation of: b is a Statement1";
 		assert b.kind() == Kind.BLOCK : "Violation of: b is a BLOCK statement";
 
-		// TODO - fill in body
+		// statement to temporarily store the value of b
+		Statement s1 = b.newInstance();
+		s1.transferFrom(b);
+		b.transferFrom(this.body);
+		// swap after creating representations of each
+		this.body.transferFrom(s1);
 
 	}
 
