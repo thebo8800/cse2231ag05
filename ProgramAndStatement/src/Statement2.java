@@ -190,8 +190,8 @@ public class Statement2 extends StatementSecondary {
 		StatementLabel sl1 = this.rep.disassemble(children);
 		Statement2 s2 = (Statement2) s;
 		children.add(pos, s2.rep);
-		this.rep.assemble(sl1, children);
 		s2.createNewRep();
+		this.rep.assemble(sl1, children);
 
 	}
 
@@ -210,6 +210,7 @@ public class Statement2 extends StatementSecondary {
 		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
 		StatementLabel sl1 = this.rep.disassemble(children);
 		s.rep = children.remove(pos);
+		this.rep.assemble(sl1, children);
 		return s;
 	}
 
@@ -217,10 +218,11 @@ public class Statement2 extends StatementSecondary {
 	public final int lengthOfBlock() {
 		assert this.kind() == Kind.BLOCK : "" + "Violation of: [this is a BLOCK statement]";
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return 0;
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+		StatementLabel sl1 = this.rep.disassemble(children);
+		int result = children.length();
+		this.rep.assemble(sl1, children);
+		return result;
 	}
 
 	@Override
@@ -265,7 +267,15 @@ public class Statement2 extends StatementSecondary {
 		assert s1.kind() == Kind.BLOCK : "Violation of: [s1 is a BLOCK statement]";
 		assert s2.kind() == Kind.BLOCK : "Violation of: [s2 is a BLOCK statement]";
 
-		// TODO - fill in body
+		Statement2 s3 = (Statement2) s1;
+		Statement2 s4 = (Statement2) s2;
+		StatementLabel sl1 = new StatementLabel(Kind.IF_ELSE, c);
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+		children.add(0, s3.rep);
+		children.add(1, s4.rep);
+		s3.createNewRep();
+		s4.createNewRep();
+		this.rep.assemble(sl1, children);
 
 	}
 
@@ -280,10 +290,14 @@ public class Statement2 extends StatementSecondary {
 		assert s2 instanceof Statement2 : "Violation of: s2 is a Statement2";
 		assert this.kind() == Kind.IF_ELSE : "" + "Violation of: [this is an IF_ELSE statement]";
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		Statement2 s3 = (Statement2) s1;
+	    Statement2 s4 = (Statement2) s2;
+	    Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+	    StatementLabel sl1 = this.rep.disassemble(children);
+	    s4.rep = children.remove(1);
+	    s3.rep = children.remove(0);
+	    this.createNewRep();
+	    return sl1.condition;
 	}
 
 	@Override
@@ -294,7 +308,12 @@ public class Statement2 extends StatementSecondary {
 		assert s instanceof Statement2 : "Violation of: s is a Statement2";
 		assert s.kind() == Kind.BLOCK : "Violation of: [s is a BLOCK statement]";
 
-		// TODO - fill in body
+		StatementLabel sl1 = new StatementLabel(Kind.WHILE, c);
+	    Statement2 s2 = (Statement2) s;
+	    Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+	    children.add(0, s2.rep);
+	    s2.createNewRep();
+	    this.rep.assemble(sl1, children);
 
 	}
 
@@ -305,10 +324,15 @@ public class Statement2 extends StatementSecondary {
 		assert s instanceof Statement2 : "Violation of: s is a Statement2";
 		assert this.kind() == Kind.WHILE : "" + "Violation of: [this is a WHILE statement]";
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+        StatementLabel sl1 = this.rep.disassemble(children);
+        Condition c1 = sl1.condition;
+        Statement2 s2 = (Statement2) s;
+        s2.rep = children.remove(0);
+        this.createNewRep();
+        
+        return c1;
+        
 	}
 
 	@Override
@@ -316,18 +340,23 @@ public class Statement2 extends StatementSecondary {
 		assert inst != null : "Violation of: inst is not null";
 		assert Tokenizer.isIdentifier(inst) : "" + "Violation of: inst is a valid IDENTIFIER";
 
-		// TODO - fill in body
-
+		StatementLabel sl1 = new StatementLabel(Kind.CALL, inst);
+        Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+        this.rep.assemble(sl1, children);
+        
 	}
 
 	@Override
 	public final String disassembleCall() {
 		assert this.kind() == Kind.CALL : "" + "Violation of: [this is a CALL statement]";
 
-		// TODO - fill in body
-
-		// Fix this line to return the result.
-		return null;
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+        StatementLabel sl1 = this.rep.disassemble(children);
+        String s1 = sl1.instruction;
+        this.createNewRep();
+        
+        return s1;
+        
 	}
 
 }
