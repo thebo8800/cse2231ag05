@@ -2,6 +2,7 @@ import components.sequence.Sequence;
 import components.statement.Statement;
 import components.statement.StatementSecondary;
 import components.tree.Tree;
+import components.tree.Tree1;
 import components.utilities.Tokenizer;
 
 /**
@@ -109,7 +110,11 @@ public class Statement2 extends StatementSecondary {
 	 */
 	private void createNewRep() {
 
-		// TODO - fill in body
+		this.rep = new Tree1<StatementLabel>();
+		StatementLabel root = new StatementLabel(Kind.BLOCK);
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+
+		this.rep.assemble(root, children);
 
 	}
 
@@ -163,10 +168,12 @@ public class Statement2 extends StatementSecondary {
 	@Override
 	public final Kind kind() {
 
-		// TODO - fill in body
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+		StatementLabel sl1 = this.rep.disassemble(children);
+		this.rep.assemble(sl1, children);
 
-		// Fix this line to return the result.
-		return null;
+		return sl1.kind;
+
 	}
 
 	@Override
@@ -179,7 +186,12 @@ public class Statement2 extends StatementSecondary {
 		assert pos <= this.lengthOfBlock() : "" + "Violation of: pos <= [length of this BLOCK]";
 		assert s.kind() != Kind.BLOCK : "Violation of: [s is not a BLOCK statement]";
 
-		// TODO - fill in body
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+		StatementLabel sl1 = this.rep.disassemble(children);
+		Statement2 s2 = (Statement2) s;
+		children.add(pos, s2.rep);
+		this.rep.assemble(sl1, children);
+		s2.createNewRep();
 
 	}
 
@@ -193,10 +205,11 @@ public class Statement2 extends StatementSecondary {
 		 * kernel purity rule. However, there is no way to avoid it and it is safe
 		 * because the convention clearly holds at this point in the code.
 		 */
+
 		Statement2 s = this.newInstance();
-
-		// TODO - fill in body
-
+		Sequence<Tree<StatementLabel>> children = this.rep.newSequenceOfTree();
+		StatementLabel sl1 = this.rep.disassemble(children);
+		s.rep = children.remove(pos);
 		return s;
 	}
 
