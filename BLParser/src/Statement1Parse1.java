@@ -11,7 +11,7 @@ import components.utilities.Tokenizer;
  * Layered implementation of secondary methods {@code parse} and
  * {@code parseBlock} for {@code Statement}.
  *
- * @author Junbo Chen, Brett Emory
+ * @author
  *
  */
 public final class Statement1Parse1 extends Statement1 {
