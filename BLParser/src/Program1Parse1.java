@@ -1,3 +1,4 @@
+import components.map.Map;
 import components.program.Program;
 import components.program.Program1;
 import components.queue.Queue;
@@ -6,6 +7,7 @@ import components.simplereader.SimpleReader1L;
 import components.simplewriter.SimpleWriter;
 import components.simplewriter.SimpleWriter1L;
 import components.statement.Statement;
+import components.utilities.Reporter;
 import components.utilities.Tokenizer;
 
 /**
@@ -56,10 +58,34 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 && tokens.front().equals("INSTRUCTION") : ""
                 + "Violation of: <\"INSTRUCTION\"> is proper prefix of tokens";
 
-        // TODO - fill in body
+        //Get the name of the instruction and report
+        //Valid or invalid
+        tokens.dequeue();
+        Reporter.assertElseFatalError(tokens.length() > 0,
+                "Expected identifier ");
+        String identifier = tokens.dequeue();
+        Reporter.assertElseFatalError(Tokenizer.isIdentifier(identifier),
+                "Instruction name " + identifier + " is invalid");
 
-        // This line added just to make the program compilable.
-        return null;
+        //Take care of the Nonterminal symbol IS
+        //Use assertions to determine validity
+        Reporter.assertElseFatalError(
+                tokens.length() > 0 && tokens.dequeue().equals("IS"),
+                "Expected: IS");
+
+        //Parse the body of the
+        body.parseBlock(tokens);
+
+        //Make sure the ending syntax is correct
+        Reporter.assertElseFatalError(
+                tokens.length() > 0 && tokens.dequeue().equals("END"),
+                "Expected END");
+        Reporter.assertElseFatalError(
+                tokens.length() > 0 && tokens.dequeue().equals(identifier),
+                "Expected " + identifier);
+
+        return identifier;
+
     }
 
     /*
@@ -91,8 +117,57 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-        // TODO - fill in body
+        //Check for empty tokens
+        if (tokens.front().equals(Tokenizer.END_OF_INPUT)) {
+            this.clear();
+        } else {
+            //Check for correct syntax, Must lead with PROGRAM
+            Reporter.assertElseFatalError(tokens.dequeue().equals("PROGRAM"),
+                    "Must lead with PROGAM");
 
+            //Check if the name is an identifier
+            Reporter.assertElseFatalError(
+                    tokens.length() > 0
+                            && Tokenizer.isIdentifier(tokens.front()),
+                    "Program name must be an identifier");
+            //Get the name
+            String name = tokens.dequeue();
+
+            //Check for correct "IS" syntax after name
+            //When no error is thrown, dequeue the next token
+            Reporter.assertElseFatalError(
+                    tokens.length() > 0 && tokens.front().equals("IS"),
+                    "Must begin with PROGRAM identifier IS");
+            tokens.dequeue();
+
+            //Get context and check syntax
+            Map<String, Statement> context = this.newContext();
+            while (tokens.front().equals("INSTRUCTION")) {
+                Statement block = this.newBody();
+                String identifier = parseInstruction(tokens, block);
+                Reporter.assertElseFatalError(!context.hasKey(identifier),
+                        "Instruction names have to be unique");
+                context.add(identifier, block);
+                Reporter.assertElseFatalError(tokens.length() > 0,
+                        "Unexpected termination");
+            }
+
+            //Get the body of the program and check "BEGIN" syntax
+            Reporter.assertElseFatalError(
+                    tokens.length() > 0 && tokens.dequeue().equals("BEGIN"),
+                    "Expected BEGIN");
+            Statement body = this.newBody();
+            body.parseBlock(tokens);
+
+            //Check for the closing "END" syntax of the program body
+            Reporter.assertElseFatalError(
+                    tokens.length() > 0 && tokens.dequeue().equals("END"),
+                    "Expected END");
+            Reporter.assertElseFatalError(
+                    tokens.length() > 0 && tokens.dequeue().equals(name),
+                    "Expected " + name);
+
+        }
     }
 
     /*
