@@ -5,6 +5,7 @@ PROGRAM Test IS
      turnleft
   END one
   
+BEGIN
   INSTRUCTION two IS
     one
     IF next-is-not-empty THEN
@@ -14,17 +15,28 @@ PROGRAM Test IS
       one
     END IF
   END two
-
-BEGIN
+  
   infect
   WHILE true DO
-    two
+    three
     IF next-is-empty THEN
-      move
+      two
     END IF
     two
     one
+    one
+    three
+    turnright
   END WHILE
 END Test
-
-random text
+  WHILE true DO
+    three
+    IF next-is-empty THEN
+      two
+    END IF
+    two
+    one
+    one
+    three
+    turnright
+  END WHILE

@@ -1,0 +1,21 @@
+PROGRAM Test IS
+
+  INSTRUCTION one IS
+     move
+     turnleft
+  END one
+
+BEGIN
+  infect
+  WHILE true DO
+    one
+    IF invalid-condition THEN
+      turnright
+      move
+    END IF
+    turnright
+    move
+    turnleft
+    BEGIN
+  END WHILE
+END Test

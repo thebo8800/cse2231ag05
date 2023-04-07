@@ -8,10 +8,9 @@ PROGRAM Test IS
   INSTRUCTION two IS
     one
     IF next-is-not-empty THEN
-      turnleft
+      turnright
     ELSE
-      one
-      one
+
     END IF
   END two
 
@@ -22,9 +21,5 @@ BEGIN
     IF next-is-empty THEN
       move
     END IF
-    two
-    one
   END WHILE
 END Test
-
-random text

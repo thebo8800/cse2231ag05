@@ -27,4 +27,4 @@ BEGIN
   END WHILE
 END Test
 
-extra stuff cannot appear after the end of the program
+random text
